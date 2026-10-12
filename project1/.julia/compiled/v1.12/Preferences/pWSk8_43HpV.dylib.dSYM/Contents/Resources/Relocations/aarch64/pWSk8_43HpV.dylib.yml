@@ -1,0 +1,33 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/umbreon/Documents/Classes/CS238/project1/.julia/compiled/v1.12/Preferences/pWSk8_43HpV.dylib'
+relocations:
+  - { offset: 0x1E, size: 0x8, addend: 0x0, symName: _julia_ht_keyindex_115, symObjAddr: 0x0, symBinAddr: 0x708, symSize: 0x18C }
+  - { offset: 0xE9, size: 0x8, addend: 0x0, symName: _julia_ht_keyindex_115, symObjAddr: 0x0, symBinAddr: 0x708, symSize: 0x18C }
+  - { offset: 0x1AB8, size: 0x8, addend: 0x0, symName: _japi1_setpropertyNOT._129, symObjAddr: 0x1764, symBinAddr: 0x1E6C, symSize: 0x100 }
+  - { offset: 0x1AC5, size: 0x8, addend: 0x0, symName: _japi1_setpropertyNOT._129, symObjAddr: 0x1764, symBinAddr: 0x1E6C, symSize: 0x100 }
+  - { offset: 0x1792, size: 0x8, addend: 0x0, symName: _julia_drop_clears_157, symObjAddr: 0x1410, symBinAddr: 0x1B18, symSize: 0x30C }
+  - { offset: 0x1821, size: 0x8, addend: 0x0, symName: _julia_drop_clears_157, symObjAddr: 0x1410, symBinAddr: 0x1B18, symSize: 0x30C }
+  - { offset: 0x16C6, size: 0x8, addend: 0x0, symName: _julia_load_preference_163, symObjAddr: 0x1140, symBinAddr: 0x1848, symSize: 0x28 }
+  - { offset: 0x16D3, size: 0x8, addend: 0x0, symName: _julia_load_preference_163, symObjAddr: 0x1140, symBinAddr: 0x1848, symSize: 0x28 }
+  - { offset: 0x4E0, size: 0x8, addend: 0x0, symName: _julia_ht_keyindex2_shorthashNOT._139, symObjAddr: 0x464, symBinAddr: 0xB6C, symSize: 0x274 }
+  - { offset: 0x5BF, size: 0x8, addend: 0x0, symName: _julia_ht_keyindex2_shorthashNOT._139, symObjAddr: 0x464, symBinAddr: 0xB6C, symSize: 0x274 }
+  - { offset: 0x1154, size: 0x8, addend: 0x0, symName: _julia_YY.load_preferenceYY.3_147, symObjAddr: 0xD34, symBinAddr: 0x143C, symSize: 0x124 }
+  - { offset: 0x117F, size: 0x8, addend: 0x0, symName: _julia_YY.load_preferenceYY.3_147, symObjAddr: 0xD34, symBinAddr: 0x143C, symSize: 0x124 }
+  - { offset: 0x39B, size: 0x8, addend: 0x0, symName: _julia_get_uuid_166, symObjAddr: 0x1D8, symBinAddr: 0x8E0, symSize: 0x1C4 }
+  - { offset: 0x3EE, size: 0x8, addend: 0x0, symName: _julia_get_uuid_166, symObjAddr: 0x1D8, symBinAddr: 0x8E0, symSize: 0x1C4 }
+  - { offset: 0x1AFC, size: 0x8, addend: 0x0, symName: _japi1_setpropertyNOT._127, symObjAddr: 0x1864, symBinAddr: 0x1F6C, symSize: 0x100 }
+  - { offset: 0x1B09, size: 0x8, addend: 0x0, symName: _japi1_setpropertyNOT._127, symObjAddr: 0x1864, symBinAddr: 0x1F6C, symSize: 0x100 }
+  - { offset: 0xB1D, size: 0x8, addend: 0x0, symName: _julia_rehashNOT._130, symObjAddr: 0x78C, symBinAddr: 0xE94, symSize: 0x558 }
+  - { offset: 0xC2E, size: 0x8, addend: 0x0, symName: _julia_rehashNOT._130, symObjAddr: 0x78C, symBinAddr: 0xE94, symSize: 0x558 }
+  - { offset: 0x170A, size: 0x8, addend: 0x0, symName: _japi1_setpropertyNOT._128, symObjAddr: 0x11B0, symBinAddr: 0x18B8, symSize: 0x100 }
+  - { offset: 0x1717, size: 0x8, addend: 0x0, symName: _japi1_setpropertyNOT._128, symObjAddr: 0x11B0, symBinAddr: 0x18B8, symSize: 0x100 }
+  - { offset: 0x1205, size: 0x8, addend: 0x0, symName: _julia_currently_compiling_182, symObjAddr: 0xEDC, symBinAddr: 0x15E4, symSize: 0x2C }
+  - { offset: 0x1230, size: 0x8, addend: 0x0, symName: _julia_currently_compiling_182, symObjAddr: 0xEDC, symBinAddr: 0x15E4, symSize: 0x2C }
+  - { offset: 0x12B9, size: 0x8, addend: 0x0, symName: _julia_setindexNOT._143, symObjAddr: 0xF60, symBinAddr: 0x1668, symSize: 0x190 }
+  - { offset: 0x1352, size: 0x8, addend: 0x0, symName: _julia_setindexNOT._143, symObjAddr: 0xF60, symBinAddr: 0x1668, symSize: 0x190 }
+  - { offset: 0x1B40, size: 0x8, addend: 0x0, symName: _julia_setpropertyNOT._125, symObjAddr: 0x1964, symBinAddr: 0x206C, symSize: 0x110 }
+  - { offset: 0x1B4D, size: 0x8, addend: 0x0, symName: _julia_setpropertyNOT._125, symObjAddr: 0x1964, symBinAddr: 0x206C, symSize: 0x110 }
+  - { offset: 0x174E, size: 0x8, addend: 0x0, symName: _julia_setpropertyNOT._121, symObjAddr: 0x12B0, symBinAddr: 0x19B8, symSize: 0x110 }
+  - { offset: 0x175B, size: 0x8, addend: 0x0, symName: _julia_setpropertyNOT._121, symObjAddr: 0x12B0, symBinAddr: 0x19B8, symSize: 0x110 }
+...

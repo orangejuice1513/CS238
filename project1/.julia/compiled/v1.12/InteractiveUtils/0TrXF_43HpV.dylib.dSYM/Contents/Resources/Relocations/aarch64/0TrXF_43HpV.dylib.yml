@@ -1,0 +1,13 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/umbreon/Documents/Classes/CS238/project1/.julia/compiled/v1.12/InteractiveUtils/0TrXF_43HpV.dylib'
+relocations:
+  - { offset: 0x1E, size: 0x8, addend: 0x0, symName: _julia_define_editor_616, symObjAddr: 0x0, symBinAddr: 0x710, symSize: 0x1C0 }
+  - { offset: 0x99, size: 0x8, addend: 0x0, symName: _julia_define_editor_616, symObjAddr: 0x0, symBinAddr: 0x710, symSize: 0x1C0 }
+  - { offset: 0x31A, size: 0x8, addend: 0x0, symName: _julia_YY._growbegNOT.YY.YY.0_606, symObjAddr: 0x418, symBinAddr: 0xB28, symSize: 0x61C }
+  - { offset: 0x3F9, size: 0x8, addend: 0x0, symName: _julia_YY._growbegNOT.YY.YY.0_606, symObjAddr: 0x418, symBinAddr: 0xB28, symSize: 0x61C }
+  - { offset: 0x702, size: 0x8, addend: 0x0, symName: _julia_define_default_editors_626, symObjAddr: 0xB50, symBinAddr: 0x1260, symSize: 0x1A40 }
+  - { offset: 0x7CD, size: 0x8, addend: 0x0, symName: _julia_define_default_editors_626, symObjAddr: 0xB50, symBinAddr: 0x1260, symSize: 0x1A40 }
+  - { offset: 0x19C, size: 0x8, addend: 0x0, symName: _julia_define_editor_622, symObjAddr: 0x20C, symBinAddr: 0x91C, symSize: 0x1C0 }
+  - { offset: 0x217, size: 0x8, addend: 0x0, symName: _julia_define_editor_622, symObjAddr: 0x20C, symBinAddr: 0x91C, symSize: 0x1C0 }
+...

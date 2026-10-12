@@ -1,0 +1,11 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/umbreon/Documents/Classes/CS238/project1/.julia/compiled/v1.12/Base64/D7K0n_43HpV.dylib'
+relocations:
+  - { offset: 0x1E, size: 0x8, addend: 0x0, symName: _julia_Generator_107, symObjAddr: 0x0, symBinAddr: 0x700, symSize: 0x14 }
+  - { offset: 0x2B, size: 0x8, addend: 0x0, symName: _julia_Generator_107, symObjAddr: 0x0, symBinAddr: 0x700, symSize: 0x14 }
+  - { offset: 0x4B3, size: 0x8, addend: 0x0, symName: _julia_collect_116, symObjAddr: 0x2F0, symBinAddr: 0x9F0, symSize: 0xC0 }
+  - { offset: 0x542, size: 0x8, addend: 0x0, symName: _julia_collect_116, symObjAddr: 0x2F0, symBinAddr: 0x9F0, symSize: 0xC0 }
+  - { offset: 0x62, size: 0x8, addend: 0x0, symName: _julia_collect_110, symObjAddr: 0xC0, symBinAddr: 0x7C0, symSize: 0x1EC }
+  - { offset: 0x169, size: 0x8, addend: 0x0, symName: _julia_collect_110, symObjAddr: 0xC0, symBinAddr: 0x7C0, symSize: 0x1EC }
+...

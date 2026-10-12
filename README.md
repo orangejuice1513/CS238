@@ -1,118 +1,307 @@
-# AA228-CS238-Student
-[![AA228/CS238 Gradescope](https://img.shields.io/badge/aa228%2Fcs238-gradescope-green?color=42a0a2)](https://www.gradescope.com/courses/1338881)
+# Bayesian Structure Learning (Project 1)
+### Julia Jiang 
+### Fall 2026 
+### CS238 
 
 
-[AA228/CS238: Decision Making under Uncertainty](https://aa228.stanford.edu), Autumn 2026, Stanford University.
+# Algorithm 
+I used the K2 algorithm, which greedily builds the network by iterating through the nodes to find parents that maximally increase the Bayesian score. I set a limit of 5 parents for any node to reduce computation. 
 
-This repository provides starter code and data for Projects 1 and 2.
+I also assume that the prior is the uniform Dirichlet distribution, as described in the textbook. 
 
-## Project 0: 
+# Runtime 
+The runtime below measures the K2 search (`fit`) in seconds. It excludes reading the CSV and writing the graph file. Higher Bayesian scores are better. All three learned graphs scored higher than the empty-edge baseline.
 
-[![Project 0 Details](https://img.shields.io/badge/project0-details-blue)](https://aa228.stanford.edu/project-0/)
+| Dataset | K2 Bayesian score | Empty-edge baseline score | Runtime (seconds) | Beats baseline? |
+|:--|--:|--:|--:|:--:|
+| Small | -3835.6794252128 | -4166.2258587849 | 0.00036 | Yes |
+| Medium | -97918.4419490843 | -117668.9985866486 | 0.00756 | Yes |
+| Large | -478642.7253532500 | -524395.4007210814 | 0.25191 | Yes |
 
-## Project 1: Bayesian Structure Learning
+# Graphs  
+### Small dataset
+![Small dataset Bayesian network](project1/graphs/small.png)
 
-[![Project 1 Details](https://img.shields.io/badge/project1-details-blue)](https://aa228.stanford.edu/project-1/) [![Project 1 Template](https://img.shields.io/badge/project1-LaTeX%20template-white)](https://www.overleaf.com/read/hxwgtnksxtts)
+### Medium dataset
+![Medium dataset Bayesian network](project1/graphs/medium.png)
 
-[LaTeX Overleaf template](https://www.overleaf.com/read/hxwgtnksxtts): click the link, go to "Menu", and "Copy Project" (make sure you're signed into Overleaf). Note this is an optional template, you're free to use your own (or not even LaTeX).
+### Large dataset
+![Large dataset Bayesian network](project1/graphs/large.png)
 
-    project1/
-    ├── data                    # CSV data files to apply structured learning
-    │   ├── small.csv               # Titanic dataset¹
-    │   ├── medium.csv              # Wine dataset²
-    │   └── large.csv               # Secret dataset
-    ├── example                 # Helpful examples
-    │   ├── example.gph             # Example graph (3 parents, 2 children with 1 parent each and 1 child with 3 parents)
-    │   ├── example.csv             # Example data generated from "example.gph"
-    │   ├── example.score           # Bayesian score of the "examples.gph" given the data "examples.csv"
-    │   ├── examples.pdf            # Visualized "examples.gph" as a TikZ graph
-    │   └── titanicexample.pdf      # Simple example network using "small.csv"
-    ├── project1.jl             # Starter code in Julia (optional, meant to help)
-    └── project1.py             # Starter code in Python (optional, meant to help)
 
-<sup>1</sup>https://cran.r-project.org/web/packages/titanic/titanic.pdf
-<br>
-<sup>2</sup>https://archive.ics.uci.edu/ml/datasets/Wine+Quality
+# Code
 
-### Notes
-- The starter code is there to help, but you're free to use any language.
-- Use `example.gph` to validate your Bayesian scoring algorithm, not your structure learning algorithm.
+The complete Julia implementation is included below, organized by source file.
 
-### Graph Plotting
-Here are some resources for plotting graphs in Julia, Python, and MATLAB.
-- Julia:
-    - [`Graphs.jl`](https://github.com/JuliaGraphs/Graphs.jl/)
-    - [`TikzGraphs.jl`](https://nbviewer.jupyter.org/github/JuliaTeX/TikzGraphs.jl/blob/master/doc/TikzGraphs.ipynb)
-    - [`GraphPlot.jl`](https://github.com/JuliaGraphs/GraphPlot.jl)
-    - [`GraphRecipes.jl`](https://github.com/JuliaPlots/GraphRecipes.jl)
-- Python:
-    - [`NetworkX`](https://networkx.github.io/documentation/stable/tutorial.html)
-- MATLAB:
-    - [`GraphPlot`](https://www.mathworks.com/help/matlab/ref/matlab.graphics.chart.primitive.graphplot.html)
 
-#### Julia Examples
-##### TikzGraphs.jl
+### `project1.jl`
+
 ```julia
-using Graphs  # for DiGraph and add_edge!
-using TikzGraphs   # for TikZ plot output
+"""
+project1.jl: script to compute a graph based on the data
 
-# An example [Chvatal Graph](https://en.wikipedia.org/wiki/Chv%C3%A1tal_graph)
-g = wheel_digraph(12) 
+written by: julia jiang for CS238
+"""
 
-# Create notional names for the nodes
-node_names = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
-
-# Create TikZ plot with node labels
-p = plot(g, node_names)
-
-# Save as PDF (using TikzPictures)
-using TikzPictures # to save TikZ as PDF
-save(PDF("wheel_tikz.pdf"), p)
-```
-
-##### GraphPlot.jl
-```julia
 using Graphs
-using GraphPlot
+using Printf
+using CSV
+using DataFrames
+using SpecialFunctions
 
-g = wheel_digraph(12)
-node_names = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
+include("score.jl")
+include("parse_data.jl")
+include("k2.jl")
 
-p = gplot(g; nodelabel=node_names)
+function write_gph(dag::DiGraph, idx2names, filename)
+    """
+    input: dict of index to names 
+    output: filename in gph form 
+    """
+    open(filename, "w") do io
+        for edge in edges(dag)
+            @printf(io, "%s,%s\n", idx2names[src(edge)], idx2names[dst(edge)])
+        end
+    end
+end
 
-# Save using Compose
-using Compose, Cairo, Fontconfig
-draw(PDF("wheel_graphplot.pdf", 16cm, 16cm), p)
+function compute(infile, outfile)
+    """
+    computes the graph using k2 algo and returns the graph and score 
+    """
+    vars, D, idx2names = load_data(infile)
+    n = length(vars)
+    method = K2Search(collect(1:n))
+
+    seconds = @elapsed G = fit(method, vars, D) # runtime 
+
+    write_gph(G, idx2names, outfile) # made the gph file 
+    score = bayesian_score(vars, G, D) # score 
+
+    G_baseline = SimpleDiGraph(n) # baseline is empty edge graph 
+    baseline_score = bayesian_score(vars, G_baseline, D)
+    @printf("Empty-edge baseline score for %s: %.10f\n", infile, baseline_score)
+    if score > baseline_score
+        println("huzzah")
+    else
+        println("try again u didn't beat the baseline")
+    end
+    
+    @printf("Bayesian score for %s: %.10f\n", infile, score)
+    @printf("K2 runtime: %.5f seconds\n", seconds)
+    return G, score
+end
+
+if abspath(PROGRAM_FILE) == @__FILE__
+    for name in ("small", "medium", "large")
+        infile = joinpath(@__DIR__, "data", "$name.csv")
+        outfile = joinpath(@__DIR__, "$name.gph")
+        compute(infile, outfile)
+    end
+end
 ```
 
-#### GraphRecipes.jl
+
+### `parse_data.jl`
+
 ```julia
-using Graphs
-using Plots
-using GraphRecipes
+"""
+load CSVs and .gph files for structure learning 
+"""
 
+function load_data(path)
+    """
+    takes in the csv file 
+    returns:
+        - vector of the variables 
+        - data matrix (variables x observations)
+        - map from variable index to its name 
+    """
+    df = CSV.read(path, DataFrame)
+    colnames = names(df)
+    D = permutedims(Matrix{Int}(df))  # variables × observations : turn into ints then transpose 
+    num_vars = size(D, 1)  
+    vars = [Variable(Symbol(colnames[i]), maximum(D[i, :])) for i in 1:num_vars]
+    idx2names = Dict(i => String(colnames[i]) for i in 1:num_vars) # idx2names[1] = "age"
+    return vars, D, idx2names
+end
 
-g = wheel_digraph(12)
-node_names = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
-
-p = graphplot(g; names=node_names, node_size=0.2)
-
-savefig(p, "wheel_graphrecipes.pdf")
+function graph_from_gph(path, idx2names)
+    """
+    takes in .gph and turns it into graph object 
+    """
+    name2idx = Dict(name => i for (i, name) in idx2names)
+    G = SimpleDiGraph(length(idx2names))
+    for line in eachline(path) # add the nodes from the .gph file 
+        s = strip(line) 
+        isempty(s) && continue 
+        a, b = split(s, ',') 
+        add_edge!(G, name2idx[strip(String(a))], name2idx[strip(String(b))])
+    end
+    return G 
+end
 ```
 
-## Project 2: Reinforcement Learning
 
-[![Project 2 Details](https://img.shields.io/badge/project2-details-blue)](https://aa228.stanford.edu/project-2/) [![Project 2 Template](https://img.shields.io/badge/project2-LaTeX%20template-white)](https://www.overleaf.com/read/gsptsmcrzpdv)
+### `score.jl`
 
-[LaTeX Overleaf template](https://www.overleaf.com/read/gsptsmcrzpdv): click the link, go to "Menu", and "Copy Project" (make sure you're signed into Overleaf). Note this is an optional template, you're free to use your own (or not even LaTeX).
+```julia
+"""
+functions to calculate bayesian score from textbook 
+"""
 
-    project2/
-    └── data                      # CSV data files of (s,a,r,sp)
-        ├── small.csv                 # 10x10 grid world
-        ├── medium.csv                # MountainCarContinuous-v0
-        └── large.csv                 # Secret RL problem
+# --------- getting the right data structures ------ #
 
-*Note: no starter code provided for Project 2.*
+struct Variable
+    name::Symbol # variable name 
+    r::Int  # number of possible values it can take on 
+end
 
-## Contact
-Please post on [Ed](https://edstem.org/) with any questions regarding this code, the data, and the projects in general. We'd be happy to help!
+function n_parent_instantiations(vars, G, i)
+    """
+        returns the number of parent combinations, i.e.
+        how many rows should the count table for node i have 
+
+        args: 
+            - vars: variables
+            - G: the graph we are tryna calculate the score for 
+            - i: the node we are on rn 
+    """
+    parents = inneighbors(G, i)
+    return isempty(parents) ? 1 : prod(vars[j].r for j in parents)
+end
+
+function parental_index(vars, G, o, i)
+    """
+    converts the parents' values for one observation into a row number 
+    args: 
+        - vars: variables 
+        - G: the graph we are tryna calculate the score for 
+        - o: observation vector
+        - i: the node we are on rn 
+    return: the row number 
+    """
+    parents = inneighbors(G, i)
+    j = 1
+    for (position, node) in enumerate(parents)
+        combs = 1 # how many combinations come b4 this parent's value 
+        for p in 1:(p - 1) # loop over positions b4 current parent 
+            combs *= vars[parents[p]].r
+        end
+        j += (o[node] - 1) * combs
+    end
+    return j 
+end
+
+function count_matrix_i(vars, G, D::AbstractMatrix{Int}, i::Int)
+    """
+    makes count matrix for variable i 
+    """
+    num_rows = n_parent_instantiations(vars, G, i) 
+    num_cols = vars[i].r
+    Mi = zeros(num_rows, num_cols)
+    for o in eachcol(D) # loop thru observation cols 
+        Mi[parental_index(vars, G, o, i), o[i]] += 1.0
+    end
+    return Mi
+end
+
+function count_matrices(vars, G, D::AbstractMatrix{Int})
+    """
+    count data for every variable 
+    returns a list of count matrices (1 for each var)
+    """
+    n = length(vars)
+    return [count_matrix_i(vars, G, D, i) for i in 1:n]
+end
+
+function prior_i(vars, G, i)
+    """
+    the uniform dirichlet pseudocounts for the ith var (matrix of all 1s :P)
+    """
+    return ones(n_parent_instantiations(vars, G, i), vars[i].r)
+end
+
+function prior(vars, G)
+    """
+    all da uniform dirichlet pseudocounts in a list 
+    """
+    n = length(vars)
+    return [prior_i(vars, G, i) for i in 1:n]
+end
+
+# --------- score calculation ------- # 
+function bayesian_score_component(M, alpha)
+    p = sum(loggamma.(alpha + M))
+    p -= sum(loggamma.(alpha))
+    p += sum(loggamma.(sum(alpha, dims=2)))
+    p -= sum(loggamma.(sum(alpha, dims=2) + sum(M, dims=2)))
+    return p
+end
+
+function bayesian_score_i(vars, G, D, i)
+    return bayesian_score_component(statistics_i(vars, G, D, i), prior_i(vars, G, i))
+end
+
+function bayesian_score(vars, G, D)
+    n = length(vars)
+    return sum(bayesian_score_i(vars, G, D, i) for i in 1:n)
+end
+```
+
+
+### `k2.jl`
+
+```julia
+"""
+textbook implementation of k2 search
+"""
+
+struct K2Search
+    ordering::Vector{Int}
+    max_parents::Int
+end
+
+K2Search(ordering::Vector{Int}) = K2Search(ordering, 5)
+
+function fit(method::K2Search, vars, D)
+    n = length(vars)
+    G = SimpleDiGraph(n)
+
+    for (k, i) in enumerate(method.ordering[2:end])
+        # i is the variable we are choosing parents for
+        # k is how many variables come before it in the ordering
+        y = bayesian_score_i(vars, G, D, i)
+
+        while length(inneighbors(G, i)) < method.max_parents
+            y_best, j_best = -Inf, 0
+
+            for j in method.ordering[1:k]
+                if !has_edge(G, j, i)
+                    add_edge!(G, j, i)
+                    y′ = bayesian_score_i(vars, G, D, i)
+
+                    if y′ > y_best
+                        y_best, j_best = y′, j
+                    end
+
+                    rem_edge!(G, j, i)
+                end
+            end
+
+            if y_best > y
+                y = y_best
+                add_edge!(G, j_best, i)
+            else
+                break
+            end
+        end
+    end
+
+    return G
+end
+```
+
+
+# AI Disclosure 
+I used ChatGPT to clarify some questions I had about the algorithms in chapter 5 of the textbook on page 103 as well as exercise 4.4 which helped me understand how to construct count matrices. 

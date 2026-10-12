@@ -1,0 +1,15 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/umbreon/Documents/Classes/CS238/project1/.julia/compiled/v1.12/OpenSpecFun_jll/TDl1L_43HpV.dylib'
+relocations:
+  - { offset: 0x1E, size: 0x8, addend: 0x0, symName: _julia___init___498, symObjAddr: 0x0, symBinAddr: 0x708, symSize: 0x1234 }
+  - { offset: 0x3F, size: 0x8, addend: 0x0, symName: _julia___init___498, symObjAddr: 0x0, symBinAddr: 0x708, symSize: 0x1234 }
+  - { offset: 0x8D, size: 0x8, addend: 0x0, symName: _julia_eager_mode_490, symObjAddr: 0x126C, symBinAddr: 0x1974, symSize: 0x3C }
+  - { offset: 0x9A, size: 0x8, addend: 0x0, symName: _julia_eager_mode_490, symObjAddr: 0x126C, symBinAddr: 0x1974, symSize: 0x3C }
+  - { offset: 0xD1, size: 0x8, addend: 0x0, symName: _julia_find_artifact_dir_471, symObjAddr: 0x12E0, symBinAddr: 0x19E8, symSize: 0x1E0 }
+  - { offset: 0xE8, size: 0x8, addend: 0x0, symName: _julia_find_artifact_dir_471, symObjAddr: 0x12E0, symBinAddr: 0x19E8, symSize: 0x1E0 }
+  - { offset: 0x12B, size: 0x8, addend: 0x0, symName: _julia_parse_wrapper_platform_494, symObjAddr: 0x14F8, symBinAddr: 0x1C00, symSize: 0xC8 }
+  - { offset: 0x138, size: 0x8, addend: 0x0, symName: _julia_parse_wrapper_platform_494, symObjAddr: 0x14F8, symBinAddr: 0x1C00, symSize: 0xC8 }
+  - { offset: 0x16F, size: 0x8, addend: 0x0, symName: _julia_make_wrapper_dict_430, symObjAddr: 0x1604, symBinAddr: 0x1D0C, symSize: 0x6A8 }
+  - { offset: 0x17C, size: 0x8, addend: 0x0, symName: _julia_make_wrapper_dict_430, symObjAddr: 0x1604, symBinAddr: 0x1D0C, symSize: 0x6A8 }
+...
